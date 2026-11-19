@@ -1,0 +1,18 @@
+name: Split HTML
+on: workflow_dispatch
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Split index.html
+        run: |
+          split -b 15m -d -a 1 index.html part
+          for f in part*; do mv "$f" "${f}.txt"; done
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add part*.txt
+          git commit -m "Add split parts"
+          git push
