@@ -1,10 +1,12 @@
 <svg xmlns="http://w3.org" width="100%" height="100%">
   <script>
     const base = "https://" + "cdn.jsdelivr.net";
-    const path = "/gh/nicholasgameproductions-rgb/Eagler1.12ngp@main/index.html";
-    fetch(base + path)
-      .then(r => r.text())
-      .then(html => {
+    const repo = "/gh/nicholasgameproductions-rgb/Eagler1.12ngp@main/";
+    const parts = ["part0.txt", "part1.txt"];
+
+    Promise.all(parts.map(p => fetch(base + repo + p).then(r => r.text())))
+      .then(chunks => {
+        const html = chunks.join("");
         const doc = new DOMParser().parseFromString(html, 'text/html');
         document.replaceChild(doc.documentElement, document.documentElement);
         document.querySelectorAll('script').forEach(oldScript => {
